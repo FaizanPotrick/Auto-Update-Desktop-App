@@ -28,7 +28,7 @@
         <ApplicationId>com.companyname.autoupdatedesktopapp</ApplicationId>
 
         <!-- Versions -->
-        <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+        <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 		<ApplicationVersion>$(ApplicationDisplayVersion).0</ApplicationVersion>
 
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
