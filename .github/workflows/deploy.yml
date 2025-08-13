@@ -1,0 +1,47 @@
+﻿name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install MAUI Workload
+      run: dotnet workload install maui-windows
+
+    - name: Restore
+      run: dotnet restore
+      working-directory: ./Auto-Update-Desktop-App
+
+    - name: Build
+      run: dotnet build -c Release -f net8.0-windows10.0.19041.0
+      working-directory: ./Auto-Update-Desktop-App
+
+    - name: Test
+      run: dotnet test -c Release -f net8.0-windows10.0.19041.0
+      working-directory: ./Auto-Update-Desktop-App
+
+    - name: Publish
+      run: dotnet publish -c Release -f net8.0-windows10.0.19041.0 /p:GenerateAppxPackageOnBuild=true /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint=${{ secrets.SIGNING_CERTIFICATE_THUMBPRINT }}
+      working-directory: ./Auto-Update-Desktop-App
+
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: Build
+        path: ./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/**/*.msix
