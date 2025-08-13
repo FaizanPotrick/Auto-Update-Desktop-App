@@ -48,7 +48,7 @@ jobs:
       id: extractVersion
       shell: pwsh
       run: |
-         $xml = [Xml] (Get-Content ./ContinuousDeployment/ContinuousDeployment.csproj)
+         $xml = [Xml] (Get-Content ./Auto-Update-Desktop-App/Auto-Update-Desktop-App.csproj)
          [string] $version = [Version] $xml.Project.PropertyGroup.ApplicationDisplayVersion
          echo "version=$($version)" >> $env:GITHUB_OUTPUT
         
