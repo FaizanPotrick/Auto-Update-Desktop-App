@@ -48,11 +48,9 @@ jobs:
       id: extractVersion
       shell: pwsh
       run: |
-        $xml = [Xml] (Get-Content ./Auto-Update-Desktop-App/Auto-Update-Desktop-App.csproj)
-        [string] $displayVersion = [Version] $xml.Project.PropertyGroup.ApplicationDisplayVersion
-        [string] $packageVersion = [Version] $xml.Project.PropertyGroup.ApplicationVersion
-        echo "displayVersion=$($displayVersion)" >> $env:GITHUB_OUTPUT
-        echo "packageVersion=$($packageVersion)" >> $env:GITHUB_OUTPUT
+         $xml = [Xml] (Get-Content ./ContinuousDeployment/ContinuousDeployment.csproj)
+         [string] $version = [Version] $xml.Project.PropertyGroup.ApplicationDisplayVersion
+         echo "version=$($version)" >> $env:GITHUB_OUTPUT
         
     - name: Create Tag
       uses: actions/github-script@v5
@@ -68,11 +66,11 @@ jobs:
     
     - name: Rename Auto-Update Installer
       shell: pwsh
-      run: Rename-Item "./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.packageVersion }}_Test/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.displayVersion }}.0_x64.msix" "AutoUpdate.msix"
+      run: Rename-Item "./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.version }}.0_Test/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.version }}.0_x64.msix" "AutoUpdate.msix"
 
     - name: Rename Certificate
       shell: pwsh
-      run: Rename-Item "./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.packageVersion }}_Test/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.displayVersion }}.0_x64.cer" "Auto-Update-Desktop-App.cer"
+      run: Rename-Item "./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.version }}.0_Test/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.version }}.0_x64.cer" "Auto-Update-Desktop-App.cer"
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
@@ -80,5 +78,5 @@ jobs:
         tag_name: v${{ steps.extractVersion.outputs.version }}
         files: | 
           ./Auto-Update-Desktop-App/Auto-Update-Desktop-App.appinstaller
-          ./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.packageVersion }}_Test/AutoUpdate.msix
-          ./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.packageVersion }}_Test/Auto-Update-Desktop-App.cer
+          ./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.version }}.0_Test/AutoUpdate.msix
+          ./Auto-Update-Desktop-App/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/Auto-Update-Desktop-App_${{ steps.extractVersion.outputs.version }}.0_Test/Auto-Update-Desktop-App.cer
