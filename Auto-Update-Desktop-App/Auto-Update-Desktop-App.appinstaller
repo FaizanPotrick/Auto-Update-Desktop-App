@@ -5,9 +5,9 @@
     Uri="https://github.com/FaizanPotrick/Auto-Update-Desktop-App/releases/latest/download/Auto-Update-Desktop-App.appinstaller">
   
   <MainPackage
-      Name="$(ApplicationId)"
+      Name="com.companyname.autoupdatedesktopapp"
       Publisher="CN=Faizan Potrick"
-      Version="$(ApplicationDisplayVersion)"
+      Version="1.0.7.0"
 	  ProcessorArchitecture="x64"
       Uri="https://github.com/FaizanPotrick/Auto-Update-Desktop-App/releases/latest/download/AutoUpdate.msix" />
   
